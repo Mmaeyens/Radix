@@ -1,6 +1,7 @@
 import joblib
 import os
 import pandas as pd
+import sklearn.metrics
 import sklearn.pipeline
 import sys
 
