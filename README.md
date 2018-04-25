@@ -26,7 +26,8 @@ To check your solution, run `python challenge.py` from the base of this reposito
 1. Call `fitted_pipeline = solution.get_pipeline().fit(X_train, y_train)` where `X_train` is a pandas DataFrame and `y_train` is a pandas Series of labels.
 2. Call `y_pred = fitted_pipeline.predict_proba(X_test)` where `X_test` is a pandas DataFrame of the same format as `X_train`.
 3. Compute the ROC AUC between `y_pred` and `y_test` and print your score!
-4. When you're ready, send us the URL to your repo!
+
+When you're ready, send us the URL to your repo!
 
 ## Stretch goals
 
