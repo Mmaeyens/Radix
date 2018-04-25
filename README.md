@@ -17,7 +17,7 @@ To succeed, you must develop a `solution` Python package that implements a `get_
 2. Install [Miniconda](https://conda.io/miniconda.html) if you don't have it already.
 3. Run `conda env create` from the repo's base directory to create the repo's conda environment from `environment.yml`. You may add packages listed on [anaconda.org](https://anaconda.org/) to `environment.yml` as desired.
 4. Run `activate machine-learning-challenge-env` to activate the conda environment.
-5. Start implementing the `def pipeline():` function in the `solution` directory!
+5. Start implementing the `def get_pipeline():` function in the `solution` directory!
 
 ## Evaluating your solution
 
