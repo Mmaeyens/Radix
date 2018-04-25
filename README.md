@@ -7,9 +7,9 @@ The goal of this challenge is to build a Machine Learning model to predict if a 
 To succeed, you must develop a `solution` Python package that implements a `get_pipeline` function that returns:
 
 - [x] an [sklearn.pipeline.Pipeline](http://scikit-learn.org/stable/modules/pipeline.html)
-- [x] that chains a series of custom [sklearn Transformers](http://scikit-learn.org/stable/data_transforms.html) (for preprocessing),
+- [x] that chains a series of custom [sklearn Estimators](http://scikit-learn.org/stable/data_transforms.html) (for preprocessing),
 - [x] and ends with a [custom sklearn Estimator](http://scikit-learn.org/stable/developers/contributing.html#rolling-your-own-estimator) that wraps a [TensorFlow model](https://www.tensorflow.org/get_started/custom_estimators)
-- [x] and will be fed a pandas DataFrame of the [Adult Data Set](http://mlr.cs.umass.edu/ml/datasets/Adult) to train and evaluate the pipeline. (Note: to make this work, all your transformers and your final estimator should operate on dataframes, instead of the standard numpy 2D array.)
+- [x] and will be fed a pandas DataFrame of the [Adult Data Set](http://mlr.cs.umass.edu/ml/datasets/Adult) to train and evaluate the pipeline. Note: to make this work, all your Estimators should operate on DataFrames instead of numpy arrays.
 
 ## Getting started
 
@@ -27,6 +27,14 @@ To check your solution, run `python challenge.py` from the base of this reposito
 2. Call `y_pred = fitted_pipeline.predict_proba(X_test)` where `X_test` is a pandas DataFrame of the same format as `X_train`.
 3. Compute the ROC AUC between `y_pred` and `y_test` and print your score!
 4. When you're ready, send us the URL to your repo!
+
+## Stretch goals
+
+If you really want to make an impression, try your hand at these stretch goals:
+
+- [x] Use all of the provided features in your model.
+- [x] Implement your pipeline so that you can [`joblib.dump`](https://pythonhosted.org/joblib/generated/joblib.dump.html) it to a file.
+- [x] Find a non-trivial way of dealing with the missing values in the feature matrix.
 
 Good luck!
 
