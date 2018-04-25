@@ -1,8 +1,15 @@
-# RADIX.AI Machine Learning challenge
+# Machine Learning challenge
 
 ## Introduction
 
-The goal of this challenge is to build an sklearn.pipeline.Pipeline that chains the necessary sklearn Estimators to train and evaluate a model on a pandas DataFrame of the [Adult Data Set](http://mlr.cs.umass.edu/ml/datasets/Adult). The resulting model will predict if an adult's yearly income is above 50K USD or not.
+The goal of this challenge is to build a Machine Learning model to predict if a given adult's yearly income is above or below $50k.
+
+To succeed, you must develop a `solution` Python package that implements a `get_pipeline` function that returns:
+
+- [ ] an [sklearn.pipeline.Pipeline](http://scikit-learn.org/stable/modules/pipeline.html) that
+- [ ] chains a series of [sklearn Estimators](http://scikit-learn.org/stable/data_transforms.html) of your choice, and must end with
+- [ ] a [TensorFlow model](https://www.tensorflow.org/get_started/custom_estimators) wrapped as a [custom sklearn Estimator](http://scikit-learn.org/stable/developers/contributing.html#rolling-your-own-estimator), and will be fed
+- [ ] a pandas DataFrame of the [Adult Data Set](http://mlr.cs.umass.edu/ml/datasets/Adult) to train and evaluate the pipeline.
 
 ## Getting started
 
@@ -16,7 +23,7 @@ The goal of this challenge is to build an sklearn.pipeline.Pipeline that chains 
 
 To check your solution, run `python challenge.py` from the base of this repository. This will trigger the following steps:
 
-1. Call `fitted_pipeline = solution.pipeline().fit(X_train, y_train)` where `X_train` is a pandas DataFrame and `y_train` is a pandas Series of labels.
+1. Call `fitted_pipeline = solution.get_pipeline().fit(X_train, y_train)` where `X_train` is a pandas DataFrame and `y_train` is a pandas Series of labels.
 2. Call `y_pred = fitted_pipeline.predict_proba(X_test)` where `X_test` is a pandas DataFrame of the same format as `X_train`.
 3. Compute the ROC AUC between `y_pred` and `y_test` and print your score!
 4. When you're ready, send us the URL to your repo!

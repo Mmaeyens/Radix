@@ -33,12 +33,12 @@ def get_data(subset='train'):
     return X, y
 
 
-def solution_score():
+def score_solution():
     # Ask the solution for the model pipeline.
     import solution
-    pipeline = solution.pipeline()
-    error_message = 'Your `solution.pipeline` implementation should return ' \
-        'an `sklearn.pipeline.Pipeline`.'
+    pipeline = solution.get_pipeline()
+    error_message = 'Your `solution.get_pipeline` implementation should ' \
+        'return an `sklearn.pipeline.Pipeline`.'
     assert isinstance(pipeline, sklearn.pipeline.Pipeline), error_message
     # Train the model on the training DataFrame.
     X_train, y_train = get_data(subset='train')
@@ -46,10 +46,15 @@ def solution_score():
     # Apply the model to the test DataFrame.
     X_test, y_test = get_data(subset='test')
     y_pred = pipeline.predict_proba(X_test)
+    # Check that the predicted probabilities have an sklearn-compatible shape.
+    assert (y_pred.ndims == 1) or \
+        (y_pred.ndims == 2 and y_pred.shape[1] == 2), \
+        'The predicted probabilities should match sklearn''s ' \
+        '`predict_proba` output shape.'
+    y_pred = y_pred if y_pred.ndims == 1 else y_pred[:, 1]
     # Evaluate the predictions with the AUC of the ROC curve.
-    test_score = sklearn.metrics.roc_auc_score(y_test, y_pred)
-    return test_score
+    return sklearn.metrics.roc_auc_score(y_test, y_pred)
 
 
 if __name__ == '__main__':
-    print(solution_score())
+    print(score_solution())
