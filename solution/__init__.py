@@ -2,7 +2,6 @@ import pandas as pd
 from sklearn.pipeline import make_pipeline
 import numpy as np
 import tensorflow as tf
-from sklearn import preprocessing
 from sklearn.externals import joblib
 from sklearn.utils.multiclass import unique_labels
 from sklearn.base import BaseEstimator, ClassifierMixin
@@ -16,11 +15,12 @@ from sklearn.preprocessing import FunctionTransformer
 
 
 def ds_transform(ds, y=None):
+    """Transforms the panda dataframe into one with only continuous features"""
     #changing native-country so it is able to use that data, but only as
     #wether the person is from the US or not, too little data otherwise
     ds = ds.rename(columns={'native-country': 'nativecountry'})
     ds.nativecountry[ds.nativecountry.str.contains('United-States')] = 0
-    ds.nativecountry[ds.nativecountry != 0 ] = 1
+    ds.nativecountry[ds.nativecountry != 0] = 1
     #replacing ? with NaN this prevents them from becoming a seperate categorical
     #feature
     ds = ds.replace({' ?': np.nan})
@@ -29,6 +29,7 @@ def ds_transform(ds, y=None):
     return ds
 
 def ds_scaler(ds, y=None):
+    """Scales the panda DataFrame"""
     #scaling age,income etc to a value between [0,1], so they do not
     #get extra weight compared to the binary features
     scaler = MinMaxScaler()
@@ -43,7 +44,14 @@ def ds_scaler(ds, y=None):
 #and evaluate a model on a pandas DataFrame. The pipeline should end with a
 #custom Estimator that wraps a TensorFlow model. See the README for details.
 def get_pipeline():
-    #First transformers, one hot encodes the non continuous features
+    """Builds a pipeline of 2 transformers and a tensoflow Estimator
+
+    Returns
+    -------
+    Pipeline object
+    """
+
+    #First transformer, one hot encodes the non continuous features
     transformer_1 = FunctionTransformer(ds_transform, validate=False)
 
     #Second transformer, scales the panda dataset using an sklearn minmaxscaler
@@ -54,7 +62,7 @@ def get_pipeline():
 
     #Saves pipeline: Does not save the custom fuctions used in the custom
     #estimator
-    joblib.dump(pipe,'pipeline.pkl')
+    joblib.dump(pipe, 'pipeline.pkl')
     return pipe
 
 
@@ -62,8 +70,6 @@ class DNNEstimator(BaseEstimator):
     """ A template estimator to be used as a reference implementation .
     Parameters
     ----------
-    demo_param : str, optional
-        A parameter used for demonstation of how to pass and store paramters.
     """
 
 
@@ -97,6 +103,7 @@ class DNNEstimator(BaseEstimator):
 
         #input_fn as defined in the estimator guidefor tensorflow
         def train_input_fn(features, labels, batch_size):
+            """Input function for training"""
             dataset = tf.data.Dataset.from_tensor_slices((features, labels))
             dataset = dataset.shuffle(buffer_size=1000).repeat(count=None).batch(batch_size)
             return dataset.make_one_shot_iterator().get_next()
