@@ -16,9 +16,11 @@ from sklearn.preprocessing import FunctionTransformer
 
 
 def ds_transform(ds, y=None):
-    #Removing native-country since most are from the US, some countries even
-    #only appear in the train set
-    del ds['native-country']
+    #changing native-country so it is able to use that data, but only as
+    #wether the person is from the US or not, too little data otherwise
+    ds = ds.rename(columns={'native-country': 'nativecountry'})
+    ds.nativecountry[ds.nativecountry.str.contains('United-States')] = 0
+    ds.nativecountry[ds.nativecountry != 0 ] = 1
     #replacing ? with NaN this prevents them from becoming a seperate categorical
     #feature
     ds = ds.replace({' ?': np.nan})
@@ -91,11 +93,11 @@ class DNNEstimator(BaseEstimator):
         #Creating a DNN clasifier
         self.classifier = tf.estimator.DNNClassifier(
             feature_columns=my_feature_columns,
-            hidden_units=[20, 20], n_classes=2)
+            hidden_units=[25, 25], n_classes=2)
 
         #input_fn as defined in the estimator guidefor tensorflow
         def train_input_fn(features, labels, batch_size):
-            dataset = tf.data.Dataset.from_tensor_slices((dict(features), labels))
+            dataset = tf.data.Dataset.from_tensor_slices((features, labels))
             dataset = dataset.shuffle(buffer_size=1000).repeat(count=None).batch(batch_size)
             return dataset.make_one_shot_iterator().get_next()
 
@@ -120,7 +122,7 @@ class DNNEstimator(BaseEstimator):
             Returns :math:`x^2` where :math:`x` is the first column of `X`.
         """
 
-        #input_fn as defined in he estimator guide of tensorflow
+        #input_fn as defined in the estimator guide of tensorflow
         def eval_input_fn(features, labels=None, batch_size=None):
             """An input function for evaluation or prediction"""
             if labels is None:
