@@ -46,13 +46,13 @@ def score_solution():
     pipeline.fit(X_train, y_train)
     # Apply the model to the test DataFrame.
     X_test, y_test = get_data(subset='test')
-    y_pred = pipeline.predict_proba(X_test)
+    y_pred = pipeline.predict(X_test)
     # Check that the predicted probabilities have an sklearn-compatible shape.
-    assert (y_pred.ndims == 1) or \
-        (y_pred.ndims == 2 and y_pred.shape[1] == 2), \
+    assert (y_pred.ndim == 1) or \
+        (y_pred.ndim == 2 and y_pred.shape[1] == 2), \
         'The predicted probabilities should match sklearn''s ' \
         '`predict_proba` output shape.'
-    y_pred = y_pred if y_pred.ndims == 1 else y_pred[:, 1]
+    y_pred = y_pred if y_pred.ndim == 1 else y_pred[:, 1]
     # Evaluate the predictions with the AUC of the ROC curve.
     return sklearn.metrics.roc_auc_score(y_test, y_pred)
 
